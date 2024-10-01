@@ -6,18 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <%= JSON.stringify(posts) %> -->
-    <%- include('nav.ejs') %>
+    <%- include('nav.ejs') %> <!-- nav.ejs 포함 -->
+
     <div class="white-bg">
-        <%for(i=0; i<posts.length; i++){%>
-        <div class="list-box">
-          <h4><%= posts[i].title %></h4>
-          <p>글내용임</p>
-        </div>
-        <% }%>
-      </div> 
+        <% for (let i = 0; i < posts.length; i++) { %> <!-- for 루프 시작 -->
+            <div class="list-box">
+                <h4><%= posts[i].title %></h4> <!-- 제목 출력 -->
+                <p>글내용임</p>
+            </div>
+        <% } %> <!-- for 루프 닫기 -->
+    </div> 
 </body>
 </html>
+
 
 <!-- <%  html사이에 자바스크립트 문법쓸때 -->
  <!-- <%- inlcude 사용할때 문법 -->

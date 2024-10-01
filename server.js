@@ -49,8 +49,13 @@ app.get('/write', (요청, 응답) => {
     응답.render('write.ejs')
 })
 
-app.post('/newpost', (req, res)=>{
+// 1.글작성 페이지에서 글써서 서버로 전송 
+// 2.서버는 글 검사 
+// 3.글을 db에 저장
+app.post('/add', async(req, res)=>{
     console.log(req.body)
+    await db.collection('post').insertOne({title: req.body.title, content: req.body.content})
+    res.redirect('/list')
 })
 
 
