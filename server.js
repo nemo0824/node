@@ -75,4 +75,4 @@ app.post('/newpost', (req, res)=>{
 // -파일확장자는 쓰지말기
 // -하위 문서를 뜻할땐 / 기호를 사용 
 
-//commit
+//commitss
