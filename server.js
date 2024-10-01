@@ -76,3 +76,4 @@ app.post('/newpost', (req, res)=>{
 // -하위 문서를 뜻할땐 / 기호를 사용 
 
 //commitss
+//commit 
