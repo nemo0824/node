@@ -1,15 +1,17 @@
+const { render } = require('ejs')
 const express = require('express')
 const app = express()
+const methodOverride = require('method-override')
+const { MongoClient, ObjectId } = require('mongodb')
 
-
+app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'))
 app.set('view engine', 'ejs')
-
 // req.body 사용시 필요한코드
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-const { MongoClient, ObjectId } = require('mongodb')
+
 
 let db
 const url = 'mongodb+srv://nemo0824:Dlawodnjs09080%40@nemo0824.fqklg.mongodb.net/?retryWrites=true&w=majority&appName=nemo0824'
@@ -59,6 +61,7 @@ app.post('/add', async(req, res)=>{
         }else{
             console.log(req.body)
             await db.collection('post').insertOne({title: req.body.title, content: req.body.content})
+            res.redirect("/list")
         }
     }catch(e){
         // console.log(e)
@@ -98,12 +101,39 @@ app.get('/edit/:id', async(req, res)=>{
 //    console.log(result)
 })
 
-app.post('/edit', async(req, res)=>{
+app.put('/edit', async(req, res)=>{
     let result = await db.collection('post').updateOne({_id: new ObjectId(req.body.id)}, {$set: {title: req.body.title, content: req.body.content}})
     // console.log(req.body)
     console.log(req.params.id)
     res.redirect('/list')
 })
+
+app.delete('/delete', async(req, res)=>{
+   console.log(req.query)
+   
+   await db.collection('post').deleteOne({_id: new ObjectId(req.query.docid)})
+   res.redirect("/list")
+   
+})
+// ajax body, form 등으로 전송가능
+
+// fetch('/URL~~', {
+//     method : 'POST',
+//     headers : { 'Content-Type' : 'application/json' },
+//     body : JSON.stringify({a : 1})
+//   })
+// query  /abc?age=20  console.log(req.query) === {age: 20}
+// query /abc?age=20&name=홍길동 ==={age:20, name: 홍길동}
+
+// params /abc/:id 입력한 무언가 /abc/홍길동 console.log(req.params) === {id: 홍길동}
+
+
+//  awiat db.collection('post').updateOne({_id:1}, {${inc: {like: -2}}})
+
+// updateOne 수정
+// findOne 조회
+// insertOne 작성
+//.find().toArray() 조회 배열로 받아오기 
 
 
 // Rest API 

@@ -13,5 +13,23 @@
     <p>
    
     <button> <a href="/edit/<%= result._id %>">수정링크</a></button>
+    <button><span class="delete">삭제</span></button>
+
+    <script>
+        document.querySelectorAll('.delete')[0].addEventListener("click", ()=>{
+            fetch('/delete?docid=' + '<%= result._id %>',{
+                method: 'DELETE',
+                headers: {'Content-Type' : 'application/json' },
+            }).then(response =>{
+                window.location.href="/list"
+            })
+        })
+    </script>
 </body>
 </html>
+<!-- 
+ fetch('/URL~~', {
+         method : 'POST',
+         headers : { 'Content-Type' : 'application/json' },
+         body : JSON.stringify({a : 1})
+       }) -->
