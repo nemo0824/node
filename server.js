@@ -9,7 +9,7 @@ app.set('view engine', 'ejs')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 let db
 const url = 'mongodb+srv://nemo0824:Dlawodnjs09080%40@nemo0824.fqklg.mongodb.net/?retryWrites=true&w=majority&appName=nemo0824'
@@ -31,8 +31,8 @@ app.get('/', (req, res) =>{
 })
 
 app.get('/news', (req, res)=>{
-    // res.send('뉴스 왔다 !')
-    db.collection('post').insertOne({title: "테스트 디비 인서트"})
+    res.send('뉴스 왔다 !')
+    // db.collection('post').insertOne({title: "테스트 디비 인서트"})
 })
 
 app.get('/about', (요청, 응답) => {
@@ -41,7 +41,7 @@ app.get('/about', (요청, 응답) => {
 
 app.get('/list', async(req, res) => {
     let result = await db.collection('post').find().toArray()
-    console.log(result)
+    // console.log(result)
     res.render('list.ejs', {posts : result})
 
 })
@@ -53,8 +53,55 @@ app.get('/write', (요청, 응답) => {
 // 2.서버는 글 검사 
 // 3.글을 db에 저장
 app.post('/add', async(req, res)=>{
-    console.log(req.body)
-    await db.collection('post').insertOne({title: req.body.title, content: req.body.content})
+    try{
+        if(req.body.title == ''){
+            res.send("글 입력해라")
+        }else{
+            console.log(req.body)
+            await db.collection('post').insertOne({title: req.body.title, content: req.body.content})
+        }
+    }catch(e){
+        // console.log(e)
+        res.status(500).send('서버에러남')
+    }
+  
+    
+})
+
+// 게시글  조회
+app.get('/detail/:id', async(req, res)=>{
+    try{
+        let result = await db.collection('post').findOne({_id: new ObjectId(req.params.id)})
+        // console.log(req.params.id)
+        res.render('detail.ejs', {result: result})
+       //  res.render('detail.ejs', {posts: result})
+    }catch(e){
+        res.status(400).send("잘못된 url 입력")
+    }
+
+})
+
+// 게시글 수정
+// detail/:id 에서 수정 버튼 생성
+// 수정버튼으로 게시글 수정 edit.ejs:id 로 이동 
+// 수정할때 이미 input에 이전 내용이 있어야함 
+// 따라서 조회를 똑같이하고 edit.ejs에 값을 보내줌
+// input value에 값을 넣어준다 
+
+
+app.get('/edit/:id', async(req, res)=>{
+    // 조회하는기능 
+    let result = await db.collection('post').findOne({_id: new ObjectId(req.params.id)})
+    // console.log(result)
+    // edit.ejs 에 result값을 넘겨줌
+    res.render('edit.ejs', {result: result})
+//    console.log(result)
+})
+
+app.post('/edit', async(req, res)=>{
+    let result = await db.collection('post').updateOne({_id: new ObjectId(req.body.id)}, {$set: {title: req.body.title, content: req.body.content}})
+    // console.log(req.body)
+    console.log(req.params.id)
     res.redirect('/list')
 })
 

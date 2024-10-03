@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link href="/write.css" rel="stylesheet"> -->
+</head>
+<body>
+    <%= JSON.stringify(result) %>
+    <h4><%= result.title %></h4>
+    <h4><%= result.content %></h4>
+    <p>
+   
+    <button> <a href="/edit/<%= result._id %>">수정링크</a></button>
+</body>
+</html>

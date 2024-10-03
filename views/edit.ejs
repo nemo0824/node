@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link href="/write.css" rel="stylesheet"> -->
+</head>
+<body>
+  
+    
+    <form action="/edit" method="POST">
+        <h4>글수정 페이지</h4>
+    <!-- <%= result %> -->
+    <input name="id" value="<%= result._id %>" type="hidden">
+    <input name="title" value="<%= result.title %>">
+    <input name="content" value="<%= result.content %>">
+    <button type="submit">전송</button>
+    </form>
+    <!-- <h4><%= result %></h4> -->
+</body>
+</html>
