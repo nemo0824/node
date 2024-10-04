@@ -9,7 +9,7 @@
     <hi>list</hi>
     <%- include('nav.ejs') %> <!-- nav.ejs 포함 -->
     
-    <%= JSON.stringify(posts) %>
+    <!-- <%= JSON.stringify(posts) %> -->
     <div class="white-bg">
         <% for (let i = 0; i < posts.length; i++) { %> <!-- for 루프 시작 -->
             <div class="list-box">
@@ -18,5 +18,11 @@
             </div>
         <% } %> <!-- for 루프 닫기 -->
     </div> 
+    <div>
+        <% for(let i=1; i<=totalPages; i++) { %>
+        <a href="/list/<%= i %>"><%= i %></a>
+        <% } %>
+    </div>
+    
 </body>
 </html>

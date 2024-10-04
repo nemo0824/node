@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const methodOverride = require('method-override')
 const { MongoClient, ObjectId } = require('mongodb')
+const { redirect } = require('react-router-dom')
 
 app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'))
@@ -44,7 +45,8 @@ app.get('/about', (요청, 응답) => {
 app.get('/list', async(req, res) => {
     let result = await db.collection('post').find().toArray()
     // console.log(result)
-    res.render('list.ejs', {posts : result})
+    redirect("/list/1")
+    // res.render('list.ejs', {posts : result})
 
 })
 app.get('/write', (요청, 응답) => {
@@ -115,6 +117,23 @@ app.delete('/delete', async(req, res)=>{
    res.redirect("/list")
    
 })
+app.get('/test/:id', (req, res)=>{
+    // console.log(req.params)
+})
+app.get('/test/abc?age=20', (req, res)=>{
+    console.log(req.query)
+})
+app.get('/list/:id', async(req, res) => {
+    console.log(req.params.id)
+    let pageId = parseInt(req.params.id)
+    const totalPosts = await db.collection('post').countDocuments();
+    let totalPages = Math.ceil(totalPosts / 5)
+    let result = await db.collection('post').find().skip((req.params.id -1) * 5 ).limit(5).toArray()
+    // console.log(result)
+    res.render('list.ejs', {posts : result, pageId: pageId, totalPages :totalPages})
+
+})
+
 // ajax body, form 등으로 전송가능
 
 // fetch('/URL~~', {
